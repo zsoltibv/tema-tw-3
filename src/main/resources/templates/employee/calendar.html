@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Calendar</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body class="flex bg-gray-100 font-sans">
+<div th:replace="fragments/componenets::top-bar('Days Off')"></div>
+<div th:replace="fragments/componenets::side-menu(menuItems=${menuItems})"></div>
+
+<div class="flex-1 p-4 ml-32">
+  <div class="p-4 border-2 border-gray-300 rounded-lg dark:border-gray-700 mt-14">
+    <table class="min-w-full bg-white border border-gray-300 shadow-md rounded-md overflow-hidden">
+      <thead>
+      <tr class="bg-indigo-500 text-white">
+        <th class="py-2 px-4 text-left">Start Request Date</th>
+        <th class="py-2 px-4 text-left">End Request Date</th>
+        <th class="py-2 px-4 text-left">Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Iterate over the days off entities and populate the table -->
+      <tr th:each="dayOff : ${daysOffList}" class="even:bg-gray-50 odd:bg-white">
+        <td class="py-2 px-4" th:text="${#temporals.format(dayOff.startDate, 'MMMM dd, yyyy')}"></td>
+        <td class="py-2 px-4" th:text="${#temporals.format(dayOff.endDate, 'MMMM dd, yyyy')}"></td>
+        <td class="py-2 px-4" th:text="${dayOff.status}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- Display a message if there are no days off entities -->
+    <div th:if="${#lists.isEmpty(daysOffList)}" class="mt-4">
+      Nothing to see yet
+    </div>
+
+    <!-- Form for adding a new day off -->
+    <form th:action="@{/calendar/addDayOff}" method="post" class="mt-4">
+      <label for="startDate">Start Request Date:</label>
+      <input type="date" id="startDate" name="startDate" required class="w-full py-2 px-3 border rounded-md">
+
+      <label for="endDate" class="mt-2">End Request Date:</label>
+      <input type="date" id="endDate" name="endDate" required class="w-full py-2 px-3 border rounded-md">
+
+      <button type="submit"
+              class="bg-indigo-500 text-white py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 focus:outline-none">
+        Submit for Approval
+      </button>
+    </form>
+  </div>
+</div>
+</body>
+
+</html>

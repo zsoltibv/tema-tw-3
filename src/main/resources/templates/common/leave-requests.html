@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Leave Requests</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+
+<body class="flex bg-gray-100 font-sans">
+
+<div th:replace="fragments/componenets::top-bar('Leave Requests')"></div>
+<div th:replace="fragments/componenets::side-menu(menuItems=${menuItems})"></div>
+
+<div class="flex-1 p-4 ml-32">
+    <div class="p-4 border-2 border-gray-300 rounded-lg dark:border-gray-700 mt-14">
+
+        <!-- Modals for leave requests -->
+        <div th:each="user : ${userList}">
+            <div>
+                <!-- Content of the leave requests -->
+                <div th:if="${not #lists.isEmpty(user.leaveRequests)}">
+                    <table class="min-w-full bg-white border border-gray-300 shadow-md rounded-md overflow-hidden">
+                        <thead>
+                        <tr class="bg-blue-600 text-white">
+                            <th class="py-3 px-4 text-left">Username</th>
+                            <th class="py-3 px-4 text-left">Start Date</th>
+                            <th class="py-3 px-4 text-left">End Date</th>
+                            <th class="py-3 px-4 text-left">Status</th>
+                            <th class="py-3 px-4 text-left">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="leaveRequest, stat : ${user.leaveRequests}" th:class="${stat.odd} ? 'odd' : 'even'">
+                            <form th:action="@{/leave-requests/update/{userId}(userId=${user.id})}" method="post" th:method="put">
+                                <td class="py-2 px-4 text-blue-600 font-semibold" th:text="${user.username}"></td>
+                                <td class="py-2 px-4">
+                                    <input type="hidden" name="leaveRequestId" th:value="${leaveRequest.id}" />
+                                    <input type="date" name="startDate" th:value="${leaveRequest.startDate}" class="rounded-md p-2" />
+                                </td>
+                                <td class="py-2 px-4">
+                                    <input type="date" name="endDate" th:value="${leaveRequest.endDate}" class="rounded-md p-2" />
+                                </td>
+                                <td class="py-2 px-4">
+                                    <select name="status" class="rounded-md p-2 bg-blue-300">
+                                        <option th:each="status : ${statusValues}" th:value="${status}" th:text="${status}" th:selected="${status == leaveRequest.status}"></option>
+                                    </select>
+                                </td>
+                                <td class="py-2 px-4">
+                                    <button type="submit" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none">
+                                        Update
+                                    </button>
+                                </td>
+                            </form>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div th:if="${#lists.isEmpty(user.leaveRequests)}">
+                    <p class="text-gray-500 py-4">No leave requests found.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+</script>
+
+</body>
+
+</html>

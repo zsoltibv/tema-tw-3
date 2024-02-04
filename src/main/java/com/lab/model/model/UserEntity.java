@@ -48,4 +48,7 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<DaysOff> leaveRequests = new ArrayList<>();
+
+    @Column(name = "nr_of_days_off")
+    private Integer nrOfDaysOff;
 }

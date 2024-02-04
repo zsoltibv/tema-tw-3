@@ -46,6 +46,7 @@ public class CalendarController {
             String username = authentication.getName();
             Long loggedInUserId = userService.findByEmail(username).get().getId();
             List<DaysOff> daysOffList = leaveRequestService.getDaysOffForEmployeeId(loggedInUserId);
+            model.addAttribute("user", userService.findByEmail(username).get());
             model.addAttribute("daysOffList", daysOffList);
         }
 

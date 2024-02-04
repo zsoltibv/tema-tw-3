@@ -55,15 +55,10 @@ public class UserService implements UserDetailsService {
     public void register(UserEntity user) {
         /* Encrypt password */
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        user.setNrOfDaysOff(21);
 
         /* each user saved/registered receive the AUTH role */
         roleService.findByName(Role.AUTH).ifPresent(user::addRole);
-        userRepository.save(user);
-    }
-
-    public void save(UserEntity user) {
-        /* Encrypt password */
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         userRepository.save(user);
     }
 

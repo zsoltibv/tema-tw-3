@@ -22,9 +22,8 @@ public class DefaultMenuService implements MenuService {
 
         if (userHasRole(authentication, "MANAGE_ACCOUNTS")) {
             menu.add(createMenuItem("Roles", "/admin/roles", Icon.ROLE, Icon.IconColor.INDIGO));
-        }else{
-            menu.add(createMenuItem("Calendar", "/calendar", Icon.CALENDAR, Icon.IconColor.INDIGO));
         }
+        menu.add(createMenuItem("Calendar", "/calendar", Icon.CALENDAR, Icon.IconColor.INDIGO));
 
         if(userHasRole(authentication, "APPROVE_DAYS_OFF_REQUEST")){
             menu.add(createMenuItem("Requests", "/leave-requests", Icon.ROLE, Icon.IconColor.INDIGO));
